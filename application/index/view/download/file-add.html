@@ -1,0 +1,79 @@
+{extend name='public/base'/}
+{block name='header'}{/block} {//关掉头部}
+{block name='menu'}{/block} {//关掉菜单}
+{block name='seo'}
+<title>{$title|default="标题"}</title>
+<meta name="keywords" content="{$keywords|default='关键字'}">
+<meta name="description" content="{$desc|default='描述'}">
+{/block}
+
+{block name='content'}
+<article class="cl pd-20">
+	<form action="doAction", method="post" enctype="multipart/form-data" target="nm_iframe" class="form form-horizontal" id="form-admin-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>作者：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input  type="text" class="input-text" value="" placeholder="" id="author" name="author">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>来源：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input  type="text" class="input-text" value="" placeholder="" id="source" name="source">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>上传者：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input  type="text" class="input-text" value="" placeholder="" id="uploader" name="uploader">
+			</div>
+		</div>			
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">分类：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+				<select class="select" name="category" size="1">
+					<option value="0" selected>分类一</option>
+					<option value="1" >分类二</option>
+					<option value="2" >分类三</option>
+					<option value="3" >分类四</option>
+					<option value="4" >分类五</option>
+					<option value="5" >其他</option>
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">文件选择：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="btn-upload form-group">
+				  <input class="input-text upload-url radius" type="text" name="uploadfile-1" id="uploadfile-1" readonly><a href="javascript:void();" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+				  <input type="file" multiple name="myFile" class="input-file">
+				</span>
+			</div>
+		</div>	
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>描述：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea type="text" class="textarea radius" value="" placeholder="请输入描述信息..." id="decsription" name="decsription"></textarea>
+			</div>
+		</div>	
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" id="submit" >
+			</div>
+		</div>
+	</form>
+	<iframe id="id_iframe" name="nm_iframe" style="display:none;"> </iframe>
+</article>
+{/block}
+
+{block name='js'}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__STATIC__/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="__STATIC__/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="__STATIC__/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script id="jquery_172" type="text/javascript" class="library" src="__STATIC__/lib/jquery/jquery-1.7.2.min.js"></script>
+{/block}
+
+</body>
+</html>

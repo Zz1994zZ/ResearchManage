@@ -1,0 +1,126 @@
+{extend name='public/base' /}
+
+{block name='seo'}
+<title>{$title|default='页面标题'}</title>
+<meta name="keywords" content="{$keywords|default='页面关键字'}">
+<meta name="description" content="{$desc|default='页面描述'}">
+<link rel="stylesheet" href="__STATIC__/css/upload.css">
+{/block}
+
+{block name='content'}
+<div class="container">
+	</br>
+	<div class="row">
+		<form action="{:url('download/download')}" method="get">
+			<div class="text-c">
+				<span class="select-box inline">
+				<select name="selected" class="select">
+					<option value="%">全部分类</option>
+					<option value="1">分类一</option>
+					<option value="2">分类二</option>
+					<option value="3">分类三</option>
+					<option value="4">分类四</option>
+				</select>
+				</span>
+				日期范围：
+				<input type="text" name="logmin" id="logmin" onfocus="WdatePicker({maxDate:'#F{ $dp.$D(\'logmax\')||\'%y-%M-%d\' }'})" class="input-text Wdate" style="width:120px;" value="{$logmin}" />
+				-
+				<input type="text" name="logmax" id="logmax" onfocus="WdatePicker({minDate:'#F{ $dp.$D(\'logmin\') }',maxDate:'%y-%M-%d'})" class="input-text Wdate" style="width:120px;" value="{$logmax}" />
+				<input type="text" name="keywords" id="" placeholder=" 资源名称" style="width:250px" class="input-text" value="{$keywords}" />
+				<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜资源</button>
+			</div>
+			<div class="cl pd-5 bg-1 bk-gray mt-20">
+				<span class="l">
+				<a href="javascript:;" onclick="datadownload()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe641;</i> 批量下载</a>
+				<a href="javascript:;" onclick="addfile('资源信息','{:url("download/fileAdd")}','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe642;</i> 上传资源</a> 
+				</span>
+			</div>
+		</form>
+		<div class="mt-5">
+			<table class="table table-border table-bordered table-bg table-hover table-sort">
+				<thead>
+					<tr class="text-c">
+						<th width="30"><input type="checkbox" id = "allChecks" name="" value="" onclick="ckAll()"></th>
+						<th width="40">ID</th>
+						<th width="180">文件名</th>
+						<th width="60">分类</th>
+						<th width="60">来源</th>
+						<th width="40">类型</th>
+						<th width="90">作者</th>
+						<th width="60">上传者</th>
+						<th width="60">上传时间</th>
+						<th width="50">文件下载</th>
+					</tr>
+				</thead>
+				<tbody>
+				{volist name="arrylist" id="vo"}
+					<tr class="text-c">
+						<td><input type="checkbox" value="{$vo.filename}.{$vo.filetype}" name="check"></td>
+						<td>{$vo.id}</td>
+						<td><button class="btn btn-link size-MINI" data-toggle="tooltip" data-placement="right" title="{$vo.decsription}">{$vo.filename}</button></td>
+						<td>{$vo.category}</td>
+						<td>{$vo.source}</td>
+						<td>{$vo.filetype}</td>
+						<td>{$vo.author}</td>
+						<td>{$vo.uploader}</td>
+						<td>{$vo.uploadtime}</td>
+						<td><a href="downloadfile?filename=upload/{$vo.filename}.{$vo.filetype}" class="text-decoration:none"><i class="Hui-iconfont">&#xe640;</i></a></td>
+					</tr>
+				{/volist}
+				</tbody>
+			</table>
+			<form action="" method="post" id="downloadfilesform" style="display:none">
+				<input type="hidden" name="files" id="downloadfilesfiles" value="upload/tmp.zip" />
+			</form>
+		</div>
+	</div>
+</div>
+</br>
+</br>
+{/block}
+
+{block name='js'}
+<script type="text/javascript">
+$('.table-sort').dataTable({
+	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+	"bStateSave": true,//状态保存
+	"searching": false,//是否显示查询
+    "lengthChange": true,//是否使用下位列表选择分页大小
+	"aoColumnDefs": [
+		//{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+		{"orderable":false,"aTargets":[0,8]}// 不参与排序的列
+	]
+});
+
+function ckAll(){
+	var flag=document.getElementById("allChecks").checked;
+	var cks=document.getElementsByName("check");
+	for(var i=0;i<cks.length;i++){
+		cks[i].checked=flag;
+	}
+}
+function datadownload(){
+	var cks=document.getElementsByName("check");
+	var myarray=new Array();
+	var index = 0;
+	for(var i=cks.length-1; i>=0; i--){
+		if(cks[i].checked==true){
+			myarray[index ++] = cks[i].value;
+		}
+	}
+	$.ajax({
+		type: "POST",  
+		url: "{:url('downloadfiles')}",  
+		data: {"id": myarray},
+		success: function(msg){
+			window.open("downloadfile?filename=upload/tmp.zip");
+		}
+	});
+}
+function addfile(title,url,w,h)
+{
+	$.post(url);
+	layer_show(title,url,w,h);
+}
+</script>
+{/block}
